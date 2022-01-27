@@ -1,5 +1,6 @@
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
 import React from 'react';
+import { useEffect, useState } from  'react';
 import { useRouter } from 'next/router';
 import appConfig from '../config.json';
 
@@ -23,12 +24,24 @@ function Titulo(props) {
 export default function PaginaInicial() {
     //const username = 'midiantossani';
     const [username, setUsername] = React.useState('midiantossani');
+    const [local, setLocal] = useState();
     const roteamento = useRouter();
     console.log(roteamento);
+    const image = ''
+    useEffect(() => {
+          fetch(`https://api.github.com/users/${username}`)
+          .then((resposta) => resposta.json())
+          .then(function 
+            (RespostaCompleta) {
+            const local = RespostaCompleta.location
+            setLocal(local)
+          })
+    })
 
 
     return (
       <>
+      {/*Box*/}
         <Box
           styleSheet={{
             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -37,6 +50,7 @@ export default function PaginaInicial() {
             backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply', backgroundPosition: 'center',
           }}
         >
+          {/*box-center*/}
           <Box
             styleSheet={{
               display: 'flex',
@@ -83,6 +97,7 @@ export default function PaginaInicial() {
                 }}
               />*/}
             <TextField
+            placeholder="Digite o usuário"
              value={username}
                 onChange={function (event) {
                   console.log('usuário digitou', event.target.value);
@@ -102,6 +117,10 @@ export default function PaginaInicial() {
                   },
                 }}
               />
+
+              {username.length < 2
+                ? <span>Preencha o campo com um usuário válido!</span>
+                : ''}
               <Button
                 type='submit'
                 label='Entrar'
@@ -114,7 +133,7 @@ export default function PaginaInicial() {
                 }}
               />
             </Box>
-            {/* Formulário */}
+            {/* Fim-Formulário */}
   
   
             {/* Photo Area */}
@@ -138,7 +157,12 @@ export default function PaginaInicial() {
                   borderRadius: '50%',
                   marginBottom: '16px',
                 }}
-                src={`https://github.com/${username}.png`}
+                src={
+                  username.length >= 2
+                   ? `https://github.com/${username}.png`
+                   :  Image
+                  }
+                  
               />
               <Text
                 variant="body4"
@@ -149,7 +173,7 @@ export default function PaginaInicial() {
                   borderRadius: '1000px'
                 }}
               >
-                {username}
+                {username.length > 2 ? username : ""}
               </Text>
             </Box>
             {/* Photo Area */}
