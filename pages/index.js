@@ -26,7 +26,6 @@ export default function PaginaInicial() {
     const [username, setUsername] = React.useState('midiantossani');
     const [local, setLocal] = useState();
     const roteamento = useRouter();
-    console.log(roteamento);
     const image = ''
     useEffect(() => {
           fetch(`https://api.github.com/users/${username}`)
@@ -72,7 +71,7 @@ export default function PaginaInicial() {
               onSubmit={function (infosDoEvento) {
                 infosDoEvento.preventDefault();
                 console.log('Alguém submeteu o form');
-                roteamento.push('/chat');
+                roteamento.push(`/chat?username=${username}`);
                 //window.location.href = '/chat';
               }}
               styleSheet={{
